@@ -5,59 +5,64 @@ const todosUL = document.getElementById('todos')
 const todos = JSON.parse(localStorage.getItem('todos'))
 
 if(todos) {
-  todos.forEach(todo => addTodo(todo))
+    todos.forEach(todo => addTodo(todo))
 }
 
 form.addEventListener('submit', (e) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  addTodo()
+    addTodo()
 })
 
 function addTodo(todo) {
-  let todoText = input.value
-  
-  if(todo) {
-    todoText = todo.text
-  }
-  if(todoText) {
-    const todoEl = document.createElement('li')
-    if(todo && todo.completed) {
-      todoEl.classList.add('completed')
+    let todoText = input.value
+
+    if(todo) {
+        todoText = todo.text
     }
-    todoEl.innerText = todoText
 
-    todoEl.addEventListener('click', () => todoEl.classList.toggle('completed'))
+    if(todoText) {
+        const todoEl = document.createElement('li')
+        if(todo && todo.completed) {
+            todoEl.classList.add('completed')
+        }
 
-    todoEl.addEventListener('contextmenu', (e) => {
-      e.preventDefault()
+        todoEl.innerText = todoText
 
-      todoEl.remove()
-    })
+        todoEl.addEventListener('click', () => {
+            todoEl.classList.toggle('completed')
+            updateLS()
+        }) 
 
-    todosUL.appendChild(todoEl)
+        todoEl.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
 
-    input.value = ''
+            todoEl.remove()
+            updateLS()
+        }) 
 
-    updateLS()
-  }
+        todosUL.appendChild(todoEl)
+
+        input.value = ''
+
+        updateLS()
+    }
 }
 
 function updateLS() {
-  todosEl = document.querySelectorAll('li')
+    todosEl = document.querySelectorAll('li')
 
-  const todos =[]
+    const todos = []
 
-  todosEl.forEach(todosEl => {
-    todos.push({
-      text: todoEl.innerText,
-      completed: todoEl.classList.contains('completed')
+    todosEl.forEach(todoEl => {
+        todos.push({
+            text: todoEl.innerText,
+            completed: todoEl.classList.contains('completed')
+        })
     })
-  })
 
-  localStorage.setItem('todos', JSON.stringify(todos))
+    localStorage.setItem('todos', JSON.stringify(todos))
 }
-
 
 
 

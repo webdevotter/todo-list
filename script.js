@@ -2,6 +2,12 @@ const form = document.getElementById('form')
 const input = document.getElementById('input')
 const todosUL = document.getElementById('todos')
 
+const todos = JSON.parse(localStorage.getItem('todos'))
+
+if(todos) {
+  todos.forEach(todo => addTodo(todo))
+}
+
 form.addEventListener('submit', (e) => {
   e.preventDefault()
 
@@ -32,7 +38,26 @@ function addTodo(todo) {
     todosUL.appendChild(todoEl)
 
     input.value = ''
+
+    updateLS()
   }
 }
+
+function updateLS() {
+  todosEl = document.querySelectorAll('li')
+
+  const todos =[]
+
+  todosEl.forEach(todosEl => {
+    todos.push({
+      text: todoEl.innerText,
+      completed: todoEl.classList.contains('completed')
+    })
+  })
+
+  localStorage.setItem('todos', JSON.stringify(todos))
+}
+
+
 
 
